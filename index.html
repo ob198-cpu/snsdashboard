@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>SNS運用管理</title>
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./detail.css">
+  <link rel="stylesheet" href="./production.css">
+</head>
+<body>
+  <!-- Icons from Lucide (ISC license). -->
+  <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
+      <symbol id="icon-house" viewBox="0 0 24 24"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+      <symbol id="icon-building" viewBox="0 0 24 24"><path d="M10 12h4"/><path d="M10 8h4"/><path d="M14 21v-3a2 2 0 0 0-4 0v3"/><path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"/><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/></symbol>
+      <symbol id="icon-megaphone" viewBox="0 0 24 24"><path d="M11 6a13 13 0 0 0 8.4-2.8A1 1 0 0 1 21 4v12a1 1 0 0 1-1.6.8A13 13 0 0 0 11 14H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"/><path d="M6 14a12 12 0 0 0 2.4 7.2 2 2 0 0 0 3.2-2.4A8 8 0 0 1 10 14"/><path d="M8 6v8"/></symbol>
+      <symbol id="icon-chart" viewBox="0 0 24 24"><path d="M5 21v-6"/><path d="M12 21V9"/><path d="M19 21V3"/></symbol>
+      <symbol id="icon-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></symbol>
+      <symbol id="icon-clipboard" viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></symbol>
+      <symbol id="icon-eye" viewBox="0 0 24 24"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></symbol>
+      <symbol id="icon-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></symbol>
+  </defs></svg>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#home" aria-label="SNS運用管理 ホーム">
+        <span class="brand-icon" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span>SNS運用管理</span>
+      </a>
+      <nav aria-label="メインメニュー">
+        <button class="nav-item active" data-view="home" type="button"><svg class="ui-icon" aria-hidden="true"><use href="#icon-house"/></svg>ホーム</button>
+      </nav>
+      <p class="sidebar-note">SNS運用状況を<br>事業所別に確認</p>
+    </aside>
+
+    <main>
+      <nav class="mode-switch" aria-label="報告の種類"><a href="#home" id="snsMode">SNS運用</a></nav>
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">SNS PERFORMANCE</p>
+          <h1 id="pageTitle">運用状況ダッシュボード</h1>
+          <p id="pageDescription">6つの事業所のSNS運用状況を確認できます。</p>
+        </div>
+        <div class="topbar-actions" id="headerMonthSlot">
+          <label>対象月
+            <select id="targetMonth" aria-label="対象月"></select>
+          </label>
+          <span class="updated"><svg class="ui-icon" aria-hidden="true"><use href="#icon-check"/></svg>未集計</span>
+          <button id="refreshData" type="button" class="text-button" title="台帳を再取得" aria-label="台帳を再取得">↻</button>
+        </div>
+      </header>
+      <p class="data-note">投稿は対象月の実績。前月比は前月全月との比較。フォロワーは記録値、増減は前月末時点との比較。目標未設定・比較不可は「—」。</p>
+      <p class="data-note" id="sourceWarnings" role="status"></p>
+
+      <section id="homeView" class="view">
+        <section class="notice-card" aria-labelledby="notice-title">
+          <div class="notice-heading"><svg class="ui-icon megaphone" aria-hidden="true"><use href="#icon-megaphone"/></svg><h2 id="notice-title">今月の注目ポイント</h2></div>
+          <div class="notice-item"><span class="notice-icon danger" aria-hidden="true">!</span><div><strong>投稿数</strong><small>実績 0件 / 目標 0件</small></div></div>
+          <div class="notice-item"><span class="notice-icon warn" aria-hidden="true">▲</span><div><strong>Imp・再生数</strong><small>前月比 <span class="change-neutral">0%</span></small></div></div>
+          <div class="notice-item"><span class="notice-icon success" aria-hidden="true">↑</span><div><strong>フォロワー増減</strong><small>前月比 <span class="change-neutral">0人</span></small></div></div>
+        </section>
+
+        <section class="panel">
+          <div class="section-title"><div><h2>事業所別 運用状況</h2></div><button class="text-button" data-go="offices" type="button">すべて見る ›</button></div>
+          <div class="table-wrap" tabindex="0" role="region" aria-label="事業所別 運用状況の表">
+            <table>
+              <thead><tr><th>事業所名</th><th>投稿数<br><small>実績 / 目標</small></th><th>Imp・再生数</th><th>前月比</th><th>フォロワー増減</th><th>KPI達成率</th><th>ステータス</th><th></th></tr></thead>
+              <tbody id="officeRows"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <div class="ranking-grid">
+          <section class="panel ranking"><div class="section-title"><div><svg class="ui-icon section-icon" aria-hidden="true"><use href="#icon-chart"/></svg><h2>Imp・再生数 前月比ランキング</h2></div><a class="text-button" href="#offices">すべて見る ›</a></div><div id="impressionRanking"></div></section>
+          <section class="panel ranking"><div class="section-title"><div><svg class="ui-icon section-icon" aria-hidden="true"><use href="#icon-users"/></svg><h2>フォロワー増加ランキング</h2></div><a class="text-button" href="#offices">すべて見る ›</a></div><div id="followerRanking"></div></section>
+        </div>
+      </section>
+      <section id="detailView" class="view" hidden aria-labelledby="detailTitle">
+        <div class="detail-toolbar">
+          <div class="detail-controls">
+            <label>事業所選択<select id="detailOffice" aria-label="事業所選択"></select></label>
+            <div id="detailMonthSlot"></div>
+          </div>
+          <div class="office-heading"><h2 id="detailTitle"></h2><p>SNS運用状況 <span class="status">未集計</span></p></div>
+        </div>
+        <section class="kpi-grid detail-kpis" aria-label="事業所のKPI">
+          <article><span class="metric-label"><svg class="ui-icon" aria-hidden="true"><use href="#icon-clipboard"/></svg>投稿数</span><strong>0 <span class="metric-target">/ 0</span></strong><div class="metric-footer"><span class="progress"><i></i></span><small>達成率 0%</small></div></article>
+          <article><span class="metric-label"><svg class="ui-icon" aria-hidden="true"><use href="#icon-eye"/></svg>Imp・再生数</span><strong>0 <span class="metric-target">/ 0</span></strong><div class="metric-footer"><span class="progress"><i></i></span><small>達成率 0%</small></div></article>
+          <article><span class="metric-label"><svg class="ui-icon" aria-hidden="true"><use href="#icon-users"/></svg>フォロワー数</span><strong>0</strong><small>前月比 <b>0%</b></small></article>
+          <article><span class="metric-label"><svg class="ui-icon" aria-hidden="true"><use href="#icon-chart"/></svg>フォロワー増減</span><strong>0</strong><small>前月比 <b>0%</b></small></article>
+        </section>
+        <p class="data-note" id="detailDataNote" role="status"></p>
+        <section class="panel detail-sns">
+          <div class="section-title"><div><h2>SNS別実績</h2></div><span class="section-caption" id="detailPeriod"></span></div>
+          <div class="table-wrap" tabindex="0" role="region" aria-label="SNS別実績の表">
+            <table class="channel-table"><thead><tr><th scope="col">SNS</th><th scope="col">投稿数（実績 / 目標）</th><th scope="col">Imp・再生数</th><th scope="col">フォロワー数</th><th scope="col">フォロワー増減</th></tr></thead><tbody id="channelRows"></tbody></table>
+          </div>
+        </section>
+        <section aria-labelledby="trendTitle"><div class="trend-heading"><h2 id="trendTitle">月次推移</h2><span class="section-caption">直近6か月</span></div>
+          <div class="trend-grid">
+            <article class="panel chart-panel"><h3>Imp・再生数の推移</h3><div id="impressionChart"></div></article>
+            <article class="panel chart-panel"><h3>フォロワー増加数の推移</h3><div id="followerChart"></div></article>
+          </div>
+        </section>
+      </section>
+
+      <section id="officesView" class="view" hidden>
+        <section class="panel">
+          <div class="section-title"><div><h2>事業所一覧</h2></div></div>
+          <div class="table-wrap" tabindex="0" role="region" aria-label="事業所一覧の表">
+            <table><thead><tr><th>事業所名</th><th>投稿数<br><small>実績 / 目標</small></th><th>Imp・再生数</th><th>前月比</th><th>フォロワー増減</th><th>KPI達成率</th><th>ステータス</th><th></th></tr></thead><tbody id="officeListRows"></tbody></table>
+          </div>
+        </section>
+      </section>
+      <section id="productionView" hidden>
+        <header class="prod-heading"><div><h1>生産活動</h1><p id="prodStatus" role="status">未取得</p></div><div class="prod-filters"><label>開始日<input id="prodStart" type="date"></label><label>終了日<input id="prodEnd" type="date"></label><button id="prodApply" type="button">集計</button><button id="prodRefresh" class="icon-button" title="台帳を再取得" aria-label="生産活動の台帳を再取得">↻</button></div></header>
+        <p class="data-note">報告作業時間（休憩・訓練等を含む記録値）。平均は1人1報告日あたり。氏名単位の参考値・本人未照合。未報告日を0時間には換算しません。</p>
+        <p id="prodError" class="prod-error" role="alert"></p><div class="prod-kpis" id="prodKpis"></div>
+        <section id="prodOverview">
+          <div class="prod-toolbar"><div class="prod-tabs" role="tablist" aria-label="比較内容"><button role="tab" aria-selected="true" data-prod-tab="offices">事業所比較</button><button role="tab" aria-selected="false" data-prod-tab="activities">活動別内訳</button></div><label>事業所<select id="prodOfficeFilter"><option value="">すべて</option></select></label><label>比較指標<select id="prodMetric"><option value="totalMinutes">合計時間</option><option value="averageMinutes">平均時間（1人1報告日）</option></select></label></div>
+          <div id="prodOfficeComparison"><div class="table-wrap prod-table-wrap"><table class="prod-table"><thead><tr><th>事業所</th><th><button data-sort="totalMinutes">合計時間 ↕</button></th><th><button data-sort="averageMinutes">平均時間／人日 ↕</button></th><th><button data-sort="reporters">報告氏名数 ↕</button></th><th>延べ報告人日</th><th>取得状況</th></tr></thead><tbody id="prodRows"></tbody></table></div><div id="prodCompareBars" class="prod-bars" aria-label="事業所比較グラフ"></div></div>
+          <div id="prodActivityComparison" hidden><div class="prod-toolbar"><label class="prod-search">活動名<input id="prodActivitySearch" type="search" placeholder="活動名で絞込み"></label><label>表示<select id="prodActivityLayout"><option value="list">時間順</option><option value="matrix">事業所を横並び</option></select></label></div><p class="data-note">同名項目の分類対応は未確認。横並び表示でも項目は統合せず、「—」は該当項目なし／未取得です。</p><div id="prodActivityList" class="table-wrap prod-table-wrap"><table class="prod-table"><thead><tr><th>活動</th><th>事業所</th><th>時間（多い順）</th><th>事業所内の割合</th></tr></thead><tbody id="prodActivityRows"></tbody></table></div><div id="prodActivityMatrix" class="table-wrap prod-table-wrap" hidden><table class="prod-table"><thead id="prodMatrixHead"></thead><tbody id="prodMatrixRows"></tbody></table></div></div>
+        </section>
+        <section id="prodDetail" hidden>
+          <div class="prod-toolbar"><button id="prodBack">← 一覧へ</button><h2 id="prodDetailTitle"></h2><span id="prodDetailDate" class="data-note"></span></div><p id="prodDetailWarning" class="prod-error"></p>
+          <div class="prod-tabs" role="tablist" aria-label="事業所の内訳"><button role="tab" aria-selected="true" data-detail-tab="activities">活動別</button><button role="tab" aria-selected="false" data-detail-tab="people">利用者別</button><button role="tab" aria-selected="false" data-detail-tab="daily">日別</button></div>
+          <div id="prodDetailActivities"><div id="prodWorkStack" class="prod-stack" aria-label="活動別の時間配分"></div><div id="prodWorkBars" class="prod-bars"></div></div>
+          <div id="prodDetailPeople" hidden><label class="prod-search">氏名<input type="search" id="prodName" placeholder="氏名で検索"></label><div class="table-wrap prod-table-wrap"><table class="prod-table"><thead><tr><th>氏名（本人未照合）</th><th>合計時間</th><th>報告日数</th><th>平均／報告日</th><th>最終報告日</th></tr></thead><tbody id="prodPeopleRows"></tbody></table></div><div class="prod-paging"><button id="prodPrev" aria-label="前のページ">←</button><span id="prodPage"></span><button id="prodNext" aria-label="次のページ">→</button></div></div>
+          <div id="prodDetailDaily" hidden><div class="table-wrap prod-table-wrap"><table class="prod-table"><thead><tr><th>日付</th><th>合計時間</th><th>報告氏名数</th></tr></thead><tbody id="prodDailyRows"></tbody></table></div></div>
+          <section id="prodPerson" hidden><div class="prod-toolbar"><h3 id="prodPersonTitle"></h3><button id="prodPersonClose" aria-label="個人明細を閉じる">×</button></div><div id="prodPersonBars" class="prod-bars"></div><div class="table-wrap prod-table-wrap"><table class="prod-table"><thead><tr><th>日付</th><th>活動</th><th>時間</th><th>進捗</th></tr></thead><tbody id="prodPersonRows"></tbody></table></div></section>
+        </section>
+      </section>
+    </main>
+  </div>
+  <script src="./app.js"></script>
+  <script type="module" src="./production.js"></script>
+</body>
+</html>

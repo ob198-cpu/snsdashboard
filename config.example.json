@@ -1,0 +1,71 @@
+{
+  "sns": [
+    {
+      "name": "UIL広島駅前",
+      "key": "yokazu7",
+      "id": null
+    },
+    {
+      "name": "UIL八丁堀",
+      "key": "yokazu5",
+      "id": null
+    },
+    {
+      "name": "UIL大手町",
+      "key": "yokazu6",
+      "id": null
+    },
+    {
+      "name": "株式会社よかず",
+      "key": "yokazu",
+      "id": null
+    },
+    {
+      "name": "ベストジョイ大通",
+      "key": "yokazu8",
+      "id": null
+    },
+    {
+      "name": "UIL大通",
+      "key": null,
+      "id": null
+    }
+  ],
+  "production": [
+    {
+      "key": "main",
+      "name": "ウィル大手町",
+      "id": null
+    },
+    {
+      "key": "2",
+      "name": "ベストジョイ菊水",
+      "id": null
+    },
+    {
+      "key": "3",
+      "name": "ベストジョイ大通",
+      "id": null
+    },
+    {
+      "key": "4",
+      "name": "UIL大通",
+      "id": null
+    },
+    {
+      "key": "5",
+      "name": "就労支援トライズ大通",
+      "id": null
+    },
+    {
+      "key": "6",
+      "name": "UIL八丁堀",
+      "id": null
+    },
+    {
+      "key": "7",
+      "name": "UIL広島駅前",
+      "id": null
+    }
+  ]
+}
